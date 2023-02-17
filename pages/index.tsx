@@ -1,60 +1,43 @@
-import React from "react"
-import { GetStaticProps } from "next"
-import Layout from "../components/Layout"
-import Post, { PostProps } from "../components/Post"
+import React from "react";
+import { GetStaticProps } from "next";
+import Layout from "../components/Layout";
+import Post, { PostProps } from "../components/Post";
+import prisma from "../lib/prisma";
+import Image from "next/image";
+import Ingredients from "../components/Ingredients";
 
+export type Ingredient = {
+  name: string;
+  type: string;
+  uses: number;
+  id: string;
+};
+
+export type Props = {
+  ingredients: Ingredient[];
+};
 export const getStaticProps: GetStaticProps = async () => {
-  const feed = [
-    {
-      id: "1",
-      title: "Prisma is the perfect ORM for Next.js",
-      content: "[Prisma](https://github.com/prisma/prisma) and Next.js go _great_ together!",
-      published: false,
-      author: {
-        name: "Nikolas Burk",
-        email: "burk@prisma.io",
-      },
-    },
-  ]
-  return { 
-    props: { feed }, 
-    revalidate: 10 
-  }
-}
-
-type Props = {
-  feed: PostProps[]
-}
+  const ingredients = await prisma.ingredient.findMany();
+  return {
+    props: { ingredients },
+    revalidate: 10,
+  };
+};
 
 const Blog: React.FC<Props> = (props) => {
   return (
     <Layout>
       <div className="page">
-        <h1>Public Feed</h1>
+        <div className="flex items-end">
+          <h1 className="font-bold text-yellow-600">Another round</h1>
+          <Image src="/cocktail.png" width="100" height="100" />
+        </div>
         <main>
-          {props.feed.map((post) => (
-            <div key={post.id} className="post">
-              <Post post={post} />
-            </div>
-          ))}
+          <Ingredients ingredients={props.ingredients} />
         </main>
       </div>
-      <style jsx>{`
-        .post {
-          background: white;
-          transition: box-shadow 0.1s ease-in;
-        }
-
-        .post:hover {
-          box-shadow: 1px 1px 3px #aaa;
-        }
-
-        .post + .post {
-          margin-top: 2rem;
-        }
-      `}</style>
     </Layout>
-  )
-}
+  );
+};
 
-export default Blog
+export default Blog;

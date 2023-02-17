@@ -1,0 +1,34 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+@import url("https://fonts.googleapis.com/css2?family=Bevan&display=swap");
+html,
+body {
+  padding: 0;
+  margin: 0;
+  font-family: "Poppins", sans-serif;
+  background-color: #2b4d3f;
+}
+
+.container {
+  background-color: pink !important;
+}
+
+.modal-dialog {
+  background-color: pink !important;
+}
+
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+  font-weight: 500;
+  color: #bc8528;
+  font-family: Bevan;
+}
+
+h1 {
+  font-size: 3rem;
+}
